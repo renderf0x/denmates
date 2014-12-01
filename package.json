@@ -1,0 +1,33 @@
+{
+  "name": "DenMates",
+  "version": "0.0.1",
+  "description": "Shared Expenses",
+  "main": "server.js",
+  "scripts": {
+    "test": "test",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/renderf0x/2014-10-solo.git"
+  },
+  "keywords": [
+    "expenses",
+    "shared",
+    "tracker",
+    "couples",
+    "roommates"
+  ],
+  "author": "Derek Barncard",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/renderf0x/2014-10-solo/issues"
+  },
+  "homepage": "https://github.com/renderf0x/2014-10-solo",
+  "dependencies": {
+    "chalk": "^0.5.1",
+    "express": "^4.10.4",
+    "mongoose": "^3.8.19",
+    "morgan": "^1.5.0"
+  }
+}
