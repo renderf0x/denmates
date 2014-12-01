@@ -1,4 +1,4 @@
-# Project Name #
+# DenMates #
 
 <!-- 
 > This material was originally posted [here](http://www.quora.com/What-is-Amazons-approach-to-product-development-and-product-management). It is reproduced here for posterities sake.
@@ -17,28 +17,28 @@ Once the project moves into development, the press release can be used as a touc
  -->
  
 ## Heading ##
-  > Name the product in a way the reader (i.e. your target customers) will understand.
+ DenMates!
 
 ## Sub-Heading ##
-  > Describe who the market for the product is and what benefit they get. One sentence only underneath the title.
+ A simple way to track shared expenses for couples and roommates.
 
 ## Summary ##
-  > Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
+ Do you have a partner or roomie you share expenses with? Sometimes it can be difficult to keep things balanced and have a good sense of who's paid more expenses, or if things are equitable. DenMates solves this by providing a simple interface that tracks both expenses and what share of the total each person has paid, making it easy to share a house together!
 
 ## Problem ##
-  > Describe the problem your product solves.
+ It can be difficult to figure out what share of given household expenses one party has paid.
 
 ## Solution ##
-  > Describe how your product elegantly solves the problem.
+ DenMates tracks individual expenses with tagged categories, and lets you see at a glance who's ahead or behind in paying their share!
 
 ## Quote from You ##
-  > A quote from a spokesperson in your company.
+ Say goodbye to trying to use stuffy excel sheets to track things you share - now you'll know who's ahead at a glance!
 
 ## How to Get Started ##
-  > Describe how easy it is to get started.
+ Just sign up for an account, create a shared tracker, and add a friend! You're ready to start immediately
 
 ## Customer Quote ##
-  > Provide a quote from a hypothetical customer that describes how they experienced the benefit.
+  Before DenMates my girlfriend and I were using corporate expense trackers to try and manage our shared bills. This was never quite right! Now we're able to easily enter expenses from anywhere and we always know who's got the tab for the next dinner out.
 
 ## Closing and Call to Action ##
-  > Wrap it up and give pointers where the reader should go next.
+ See http://denmates.com for more!
