@@ -1,4 +1,4 @@
-<div ng-controller="foobar" layout="column" layout-fill>
+<div ng-controller="mainExpensesController" layout="column" layout-fill>
 	<md-toolbar>
 		<div class="md-toolbar-tools">
 	      <span><h1>denmates</h1></span>
@@ -7,7 +7,7 @@
 	</md-toolbar>
 	<md-toolbar>
 		<div class="md-toolbar-tools">
-		<span flex><h3>Current Den: {{data.den}}</h3></span>
+		<span flex><md-button class="md-raised" ng-click="showDenSelector($event)">Current Den: {{data.den}}</md-button></span>
 	      <span flex><md-button class="md-raised" ng-click="showCreateDen($event)">Create new den</md-button></span>
 	       <span flex><md-button class="md-raised" ng-click="showAddMatesToDen($event)">Add Mates to den</md-button></span>
 	      <md-button>
@@ -23,7 +23,7 @@
 			   <md-text-float label="Description" ng-model="data.newExpense.description"></md-text-float>
 			   <md-text-float label="Amount" ng-model="data.newExpense.amount"></md-text-float>
 			   <select class="form-control" label="User" ng-model="data.newExpense.user">
-			   	<option ng-repeat="user in data.users" value="{{user}}">{{user}}</option>
+			   	<option ng-repeat="user in data.users" value="{{user.name}}" ng-selected="data.users[0]">{{user.name}}</option>
 			   </select>
 			   <md-text-float label="Tags" ng-model="data.newExpense.tags"></md-text-float>
 			   <md-button class="md-raised" ng-click="saveNewExpense()">Save!</md-button>
@@ -42,7 +42,7 @@
 							<h2>{{expense.title}}</h2>
 							<h4>{{expense.description}}</h4>
 							<h4>{{expense.user}}</h4>
-							<p ng-repeat="tag in expense.tags">{{tag}} </p>
+							<p ng-repeat="tag in expense.tags track by $id(tag)">{{tag}} </p>
 						</div>
 					</md-item-content>
 				</md-item>
@@ -53,6 +53,6 @@
 		</md-whiteframe>
 	</md-content>
 	
-	<pre> Real items: {{data.real | json}}</pre>
+	<pre> Real items: {{data.users | json}}</pre>
 	<pre>{{data.den}}</pre>
 </div>

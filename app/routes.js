@@ -47,21 +47,45 @@ router.route('/dens/:den')
 
 	});
 
-router.route('/users/:den')
+//should display users in a den, and add users to a den
+router.route('/users/dens/:den')
 	.get(function(req, res){
-		Den.find({}, function(err, data){
+		Den.find({name: req.params.den}, function(err, data){
 			if (err)
 				res.send(err);
 			else if (data.length > 0){
-				res.json(data.users);
+				var usersArray = data[0].users;
+				User.find({'_id': { $in: usersArray}}, function(err, data){
+					if (err)
+						res.send(err);
+					res.json(data);
+				}); 
 			} else {
-				res.json([]);
+				res.json({});
 			}
 		});
 	})
 	.post(function(req, res){
 		console.log(req.body);
-		res.json('POST received: ' + JSON.stringify(req.body));
+		Den.findOne({name: req.params.den}, function(err, den){
+			if (err)
+				res.send(err);
+			if (!den){
+				res.status(500).end();
+			} else {
+				
+				for (var i = 0; i < req.body.users.length; i++){
+					if (den.users.indexOf(req.body.users[i]) === -1){
+						den.users.push(req.body.users[i]);
+					}
+				}
+				den.save(function(err){
+					if (err)
+						res.send(err);
+					res.status(201).end();
+				});
+			}
+		});
 	});
 
 router.route('/dens')
@@ -98,7 +122,16 @@ router.route('/dens')
 
 router.route('/mates')
 	.get(function(req, res){
+		//fake data
+		var data = {mates: [{id: '45dhfks', name:'Horo'}, {id:'h4r8f',name:'Lawrence'}, {id:'477gds',name:'Chloe'}, {id:'dge54',name:'Renard'}, {id:'eh45sw',name:'Inari'}]}
 
+		User.find({}, function(err, data){
+			if (err)
+				res.send(err);
+			res.json({mates: data});
+		});
+
+		// res.json(data);
 	})
 	.post(function(req, res){
 

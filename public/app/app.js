@@ -4,12 +4,12 @@ var app = angular.module( 'denMatesClient', [ 'ngMaterial', 'ngQuickDate', 'ui.r
 		$stateProvider
 			.state('home', {
 				url: "/",
-				controller: "foobar",
+				controller: "mainExpensesController",
 				templateUrl: "app/views/denView.html"
 			})
 			.state('denById', {
 				url: '/dens/:denId',
-				controller: 'foobar',
+				controller: 'mainExpensesController',
 				templateUrl: 'app/views/denView.html'
 			});
 		});
@@ -28,13 +28,18 @@ app.config(function(ngQuickDateDefaultsProvider) {
   });
 });
 
-app.controller('foobar', function($scope, $mdDialog, $stateParams, expensesFactory){
+app.controller('mainExpensesController', function($scope, $mdDialog, $stateParams, expensesFactory, denFactory){
 
     	$scope.data = {};
     	$scope.data.newExpense = {};
     	$scope.data.newExpense.date = new Date();
-    	$scope.data.users = ['Horo', 'Lawrence', 'Chloe']; //for testing
     	$scope.data.den = $stateParams.denId || 'den1';
+        denFactory.getUsersForDen($scope.data.den).then(function(data){
+            $scope.data.users = data
+            console.log("got users: ", data)
+        });
+
+        // $scope.data.users = ['Horo', 'Lawrence', 'Chloe']; //for testing
 
     	$scope.getExpensesForDen = function(den){
     		expensesFactory.getExpensesForDen(den).then(function(data){
@@ -67,7 +72,22 @@ app.controller('foobar', function($scope, $mdDialog, $stateParams, expensesFacto
     	console.log($stateParams);
 });
 
-function DialogController($scope, $mdDialog, denFactory){
+function DialogController($scope, $mdDialog, $stateParams, denFactory, userFactory){
+    $scope.data = $scope.data || {};
+
+    userFactory.getMates().then(function(data){
+        $scope.data.mates = data.mates;
+    });
+
+    (function(){
+        if ($stateParams.denId){
+            $scope.data.den = $stateParams.denId || 'den1';
+            console.log($scope.data.den);
+        }
+    })()
+
+    $scope.selectedMates = {};
+
 	 $scope.hide = function() {
 	    $mdDialog.hide();
 	  };
@@ -79,6 +99,12 @@ function DialogController($scope, $mdDialog, denFactory){
 	  	denFactory.saveNewDen(den);
 	    $mdDialog.hide();
 	  };
+
+      $scope.addMatesToDen = function(){
+        console.log("Current Selection: ", $scope.selectedMates);
+        denFactory.addUsersToDen($scope.data.den, $scope.selectedMates);
+        $mdDialog.hide();
+      };
 };
 
 app.factory('denFactory', function($q, $http){
@@ -90,11 +116,48 @@ app.factory('denFactory', function($q, $http){
 			}).then(function(res){
 				return res.data;
 			});
-	}
+	};
+
+    var addUsersToDen = function(den, userIDs){
+        return $http({
+            method: 'POST',
+            url: '/api/users/dens/' + den,
+            data: {users: Object.keys(userIDs)}
+            }).then(function(res){
+                return res.data;
+            });
+    };
+
+    var getUsersForDen = function(den){
+        return $http({
+            method: 'GET',
+            url: '/api/users/dens/' + den
+        }).then(function(res){
+            return res.data;
+        });
+    };
 
 	return {
-		saveNewDen: saveNewDen
+		saveNewDen: saveNewDen,
+        addUsersToDen: addUsersToDen,
+        getUsersForDen: getUsersForDen
 	};
+});
+
+app.factory('userFactory', function($q, $http){
+    var getMates = function(){
+        return $http({
+            method: 'GET',
+            url: '/api/mates'
+        }).then(function(res){
+            console.log(res.data);
+            return res.data;
+        });
+    };
+
+    return {
+        getMates: getMates
+    };
 });
 
 app.factory('expensesFactory', function($q, $http){
