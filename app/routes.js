@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var Expense = require('./models/expense.js');
+var Den = require('./models/den.js');
 
 //for testing only
 
@@ -55,9 +56,33 @@ router.route('/users/:den')
 
 router.route('/dens')
 	.get(function(req, res){
-
+		Den.find({}, function(err, data){
+			if (err)
+				res.send(err);
+			res.json(data);
+		});
 	})
 	.post(function(req, res){
+		console.log(req.body.den);
+
+		Den.find({name: req.body.den}, function(err, data){
+			if (err){
+				res.send(err);
+			}
+			else if (data.length >=1){
+				console.log('found status', data);
+				res.send('found')
+			} else {
+				var den = new Den({
+					name: req.body.den
+				});
+				den.save(function(err){
+					if (err)
+						res.send(err);
+					res.status(201).end();
+					});
+			}
+		});
 
 	});
 

@@ -8,7 +8,7 @@ var app = angular.module( 'denMatesClient', [ 'ngMaterial', 'ngQuickDate', 'ui.r
 				templateUrl: "app/views/denView.html"
 			})
 			.state('denById', {
-				url: '/den/:denid',
+				url: '/dens/:denId',
 				controller: 'foobar',
 				templateUrl: 'app/views/denView.html'
 			});
@@ -28,13 +28,13 @@ app.config(function(ngQuickDateDefaultsProvider) {
   });
 });
 
-app.controller('foobar', function($scope, expensesFactory){
+app.controller('foobar', function($scope, $mdDialog, $stateParams, expensesFactory){
 
     	$scope.data = {};
     	$scope.data.newExpense = {};
     	$scope.data.newExpense.date = new Date();
     	$scope.data.users = ['Horo', 'Lawrence', 'Chloe']; //for testing
-    	$scope.data.den = 'den1';
+    	$scope.data.den = $stateParams.denId || 'den1';
 
     	$scope.getExpensesForDen = function(den){
     		expensesFactory.getExpensesForDen(den).then(function(data){
@@ -47,7 +47,46 @@ app.controller('foobar', function($scope, expensesFactory){
     		expensesFactory.saveNewExpense($scope.data.newExpense, $scope.data.den);
     	};
 
-    	$scope.getExpensesForDen('den1');
+    	$scope.showCreateDen = function(event){
+    		$mdDialog.show({
+    			controller: DialogController,
+    			templateUrl: "app/views/dialogs/createDenDialog.html",
+    			targetEvent: event
+    		}).then(function(){});
+    	};
+
+    	$scope.getExpensesForDen($scope.data.den);
+    	console.log($stateParams);
+});
+
+function DialogController($scope, $mdDialog, denFactory){
+	 $scope.hide = function() {
+	    $mdDialog.hide();
+	  };
+	  $scope.cancel = function() {
+	    $mdDialog.cancel();
+	  };
+	  $scope.createNewDen = function(den) {
+	  	console.log('den is: ' + den);
+	  	denFactory.saveNewDen(den);
+	    $mdDialog.hide();
+	  };
+};
+
+app.factory('denFactory', function($q, $http){
+	var saveNewDen = function(den){
+		return $http({
+			method: 'POST',
+			url: '/api/dens',
+			data: {den: den}
+			}).then(function(res){
+				return res.data;
+			});
+	}
+
+	return {
+		saveNewDen: saveNewDen
+	};
 });
 
 app.factory('expensesFactory', function($q, $http){

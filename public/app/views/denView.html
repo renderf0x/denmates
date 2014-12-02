@@ -3,15 +3,12 @@
 		<div class="md-toolbar-tools">
 	      <span><h1>denmates</h1></span>
 	      <span></span>
-	      <md-button>
-	        Right Bar Button
-	      </md-button>
 	    </div>
 	</md-toolbar>
 	<md-toolbar>
 		<div class="md-toolbar-tools">
-		<span flex><h3>Current Den: Den1</h3></span>
-	      <span flex>Create new den</span>
+		<span flex><h3>Current Den: {{data.den}}</h3></span>
+	      <span flex><md-button class="md-raised" ng-click="showCreateDen($event)">Create new den</md-button></span>
 	      <md-button>
 	        Right Bar Button
 	      </md-button>
@@ -55,4 +52,5 @@
 	</md-content>
 	
 	<pre> Real items: {{data.real | json}}</pre>
+	<pre>{{data.den}}</pre>
 </div>
