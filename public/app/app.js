@@ -49,7 +49,9 @@ app.controller('mainExpensesController', function($scope, $mdDialog, $stateParam
 
     	$scope.saveNewExpense = function(){
     		console.log($scope.data.newExpense);
-    		expensesFactory.saveNewExpense($scope.data.newExpense, $scope.data.den);
+    		expensesFactory.saveNewExpense($scope.data.newExpense, $scope.data.den).then(function(){
+                $scope.getExpensesForDen($scope.data.den);
+            });
     	};
 
     	$scope.showCreateDen = function(event){

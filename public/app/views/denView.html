@@ -33,7 +33,7 @@
 		<md-content>
 			<md-text-float ng-model="search" label="Search here to narrow the field"></md-text-float>
 			<table table="table table-hover">
-				<tr ng-repeat="expense in data.expenses | filter:search">
+				<tr ng-repeat="expense in data.expenses | filter:search | orderBy:-expense.date">
 					<td class="item">
 						<h3>{{expense.date | date:'MM/dd/yyyy'}}</h3>
 					</td>
