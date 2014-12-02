@@ -21,64 +21,7 @@
 
 	</head>
 	<body>
-		<div ng-controller="foobar" layout="column" layout-fill>
-			<md-toolbar>
-				<div class="md-toolbar-tools">
-			      <span><h1>denmates</h1></span>
-			      <span></span>
-			      <md-button>
-			        Right Bar Button
-			      </md-button>
-			    </div>
-			</md-toolbar>
-			<md-toolbar>
-				<div class="md-toolbar-tools">
-				<span flex><h3>Current Den: Den1</h3></span>
-			      <span flex>Create new den</span>
-			      <md-button>
-			        Right Bar Button
-			      </md-button>
-			    </div>
-			</md-toolbar>
-
-			<md-content>
-				<md-whiteframe class="md-whiteframe-z1" layout layout="row" layout-align="center center">
-					   <quick-datepicker ng-model='data.newExpense.date' disable-timepicker="true" icon-class='fa fa-calendar'></quick-datepicker>
-					   <md-text-float label="Title" ng-model="data.newExpense.title"></md-text-float>
-					   <md-text-float label="Description" ng-model="data.newExpense.description"></md-text-float>
-					   <md-text-float label="Amount" ng-model="data.newExpense.amount"></md-text-float>
-					   <select class="form-control" label="User" ng-model="data.newExpense.user">
-					   	<option ng-repeat="user in data.users" value="{{user}}">{{user}}</option>
-					   </select>
-					   <md-text-float label="Tags" ng-model="data.newExpense.tags"></md-text-float>
-					   <md-button class="md-raised" ng-click="saveNewExpense()">Save!</md-button>
-				</md-whiteframe>
-
-				<md-whiteframe class="md-whiteframe-z2">
-					<md-list layout="column" flex>
-						<md-item ng-repeat="expense in data.expenses" layout="row">
-							<md-item-content>
-								<div class="md-tile-left">
-									<i class="fa fa-usd"></i>{{expense.amount}}
-								</div>
-								<div class="md-tile-content">
-									<h3>{{expense.date | date:'MM/dd/yyyy'}}</h3>
-									<h2>{{expense.title}}</h2>
-									<h4>{{expense.description}}</h4>
-									<h4>{{expense.user}}</h4>
-									<p ng-repeat="tag in expense.tags">{{tag}} </p>
-								</div>
-							</md-item-content>
-						</md-item>
-					</md-list>
-					<div layout="column" flex>
-					d3 chart here
-					</div>
-				</md-whiteframe>
-			</md-content>
-			
-			<pre> Real items: {{data.real | json}}</pre>
-		</div>
+		<div ui-view></div>
 		<!-- angular components -->
 		<script src="bower_components/angular/angular.js"></script>
 	    <script src="bower_components/angular-aria/angular-aria.js"></script>

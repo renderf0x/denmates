@@ -1,9 +1,16 @@
 var app = angular.module( 'denMatesClient', [ 'ngMaterial', 'ngQuickDate', 'ui.router' ] )
 	.config(function($stateProvider, $urlRouterProvider){
+		$urlRouterProvider.otherwise('/');
 		$stateProvider
-			.state('statelyConduct', {
-				url: "/public/index.html",
-				controller: "foobar"
+			.state('home', {
+				url: "/",
+				controller: "foobar",
+				templateUrl: "app/views/denView.html"
+			})
+			.state('denById', {
+				url: '/den/:denid',
+				controller: 'foobar',
+				templateUrl: 'app/views/denView.html'
 			});
 		});
 app.config(function(ngQuickDateDefaultsProvider) {
@@ -40,12 +47,7 @@ app.controller('foobar', function($scope, expensesFactory){
     		expensesFactory.saveNewExpense($scope.data.newExpense, $scope.data.den);
     	};
 
-    	$scope.getRealExpenses = function(){
-    		expensesFactory.getRealExpenses();
-    	}
-
     	$scope.getExpensesForDen('den1');
-    	$scope.data.real = $scope.getRealExpenses();
 });
 
 app.factory('expensesFactory', function($q, $http){
@@ -62,17 +64,6 @@ app.factory('expensesFactory', function($q, $http){
     		});
     	};
 
-    	//test function to see if we're actually saving shit.
-
-    	var getRealExpenses = function(den){
-    		return $http({
-    			method: 'GET',
-    			url: '/api/dens/real/',
-    		}).then(function(res){
-    			console.log(res.data);
-    			return res.data;
-    		});
-    	};
 
     	var saveNewExpense = function (data, den){
     		var preparedData = prepareData(data);
@@ -99,7 +90,6 @@ app.factory('expensesFactory', function($q, $http){
 
     	return {
     		getExpenses: getExpenses,
-    		getRealExpenses: getRealExpenses,
     		getExpensesForDen: getExpensesForDen,
     		saveNewExpense: saveNewExpense
     	};
