@@ -1,4 +1,4 @@
-<div ng-controller="mainExpensesController" layout="column" layout-fill>
+<div ng-controller="mainExpensesController" class="container" layout="column" layout-fill>
 	<md-toolbar>
 		<div class="md-toolbar-tools">
 	      <span><h1>denmates</h1></span>
@@ -16,8 +16,7 @@
 	    </div>
 	</md-toolbar>
 
-	<md-content>
-		<md-whiteframe class="md-whiteframe-z1" layout layout="row" layout-align="center center">
+	<md-whiteframe class="md-whiteframe-z1" layout layout="row" layout-align="center center">
 			   <quick-datepicker ng-model='data.newExpense.date' disable-timepicker="true" icon-class='fa fa-calendar'></quick-datepicker>
 			   <md-text-float label="Title" ng-model="data.newExpense.title"></md-text-float>
 			   <md-text-float label="Description" ng-model="data.newExpense.description"></md-text-float>
@@ -29,30 +28,67 @@
 			   <md-button class="md-raised" ng-click="saveNewExpense()">Save!</md-button>
 		</md-whiteframe>
 		<!-- perhaps one of these here: http://bl.ocks.org/mbostock/3887193 http://bl.ocks.org/kerryrodden/7090426 -->
-		<md-whiteframe class="md-whiteframe-z2">
+	<md-whiteframe class="md-whiteframe-z2">
+		<md-content>
 			<md-text-float ng-model="search" label="Search here to narrow the field"></md-text-float>
-			<md-list layout="column" flex>
-				<md-item ng-repeat="expense in data.expenses | filter:search" layout="row">
+			<table table="table table-hover">
+				<tr ng-repeat="expense in data.expenses | filter:search">
+					<td class="item">
+						<h3>{{expense.date | date:'MM/dd/yyyy'}}</h3>
+					</td>
+					<td class="item">
+						<i class="fa fa-usd"></i>{{expense.amount}}
+					</td>
+					<td class="item">
+						<h2>{{expense.title}}</h2>
+					</td>
+					<td class="item">
+						<h4>{{expense.description}}</h4>
+					</td>
+					<td class="item">
+						<h4>{{expense.user}}</h4>
+					</td>
+					<td class="item">
+						<span ng-repeat="tag in expense.tags track by $id(tag)">{{tag}} </span>
+					</td>
+					<td class="item">
+						<i class="fa fa-edit" ng-click="deleteExpense()">  </i>
+						<i class="fa fa-times">  </i>
+					</td>
+				</tr>
+			</table>
+			<!-- <md-list flex>
+				<md-item ng-repeat="expense in data.expenses | filter:search" class="row" layout="row" flex="100">
 					<md-item-content>
 						<div class="md-tile-left">
 							<i class="fa fa-usd"></i>{{expense.amount}}
 						</div>
-						<div class="md-tile-content">
+						<div class="item" layout="column" flex="20">
 							<h3>{{expense.date | date:'MM/dd/yyyy'}}</h3>
+						</div>
+						<div class="item" layout="column" flex="40">
 							<h2>{{expense.title}}</h2>
+						</div>
 							<h4>{{expense.description}}</h4>
+						<div class="item" layout="column" flex="20">
 							<h4>{{expense.user}}</h4>
+						</div>
+						<div class="md-tile-right">
 							<p ng-repeat="tag in expense.tags track by $id(tag)">{{tag}} </p>
+						</div>
+						<div>
+							<i class="fa fa-edit"></i>
+							<i class="fa fa-times"></i>
 						</div>
 					</md-item-content>
 				</md-item>
-			</md-list>
+			</md-list> -->
 			<div layout="column" flex>
 			d3 chart here
 			</div>
-		</md-whiteframe>
-	</md-content>
+		</md-content>
+	</md-whiteframe>
 	
-	<pre> Real items: {{data.users | json}}</pre>
-	<pre>{{data.den}}</pre>
+	<!-- <pre> Real items: {{data.users | json}}</pre>
+	<pre>{{data.den}}</pre> -->
 </div>
