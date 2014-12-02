@@ -2,17 +2,18 @@
 	<md-toolbar>
 		<div class="md-toolbar-tools">
 	      <span><h1>denmates</h1></span>
-	      <span></span>
+	      <span flex></span>
+	      Logged in as:
+	      <md-button>
+	        Derek
+	      </md-button>
 	    </div>
 	</md-toolbar>
 	<md-toolbar>
 		<div class="md-toolbar-tools">
-		<span flex><md-button class="md-raised" ng-click="showDenSelector($event)">Current Den: {{data.den}}</md-button></span>
-	      <span flex><md-button class="md-raised" ng-click="showCreateDen($event)">Create new den</md-button></span>
-	       <span flex><md-button class="md-raised" ng-click="showAddMatesToDen($event)">Add Mates to den</md-button></span>
-	      <md-button>
-	        Right Bar Button
-	      </md-button>
+		<span flex><md-button class="md-raised" ng-click="showDenSelector($event)"><i class="fa fa-paw"></i> Current Den: {{data.den}}</md-button></span>
+	      <span flex><md-button class="md-raised" ng-click="showCreateDen($event)"><i class="fa fa-plus"></i> Create new den</md-button></span>
+	       <span flex><md-button class="md-raised" ng-click="showAddMatesToDen($event)"><i class="fa fa-share-alt"></i> Add Mates to den</md-button></span>
 	    </div>
 	</md-toolbar>
 
@@ -52,8 +53,8 @@
 						<span ng-repeat="tag in expense.tags track by $id(tag)">{{tag}} </span>
 					</td>
 					<td class="item">
-						<i class="fa fa-edit" ng-click="deleteExpense()">  </i>
-						<i class="fa fa-times">  </i>
+						<i class="fa fa-edit">  </i>
+						<i class="fa fa-times" ng-click="deleteExpense(expense._id)">  </i>
 					</td>
 				</tr>
 			</table>

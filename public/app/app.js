@@ -68,6 +68,11 @@ app.controller('mainExpensesController', function($scope, $mdDialog, $stateParam
     		});
     	};
 
+        $scope.deleteExpense = function(expenseID){
+            expensesFactory.deleteExpense(expenseID);
+            $scope.getExpensesForDen($scope.data.den);
+        };
+
     	$scope.getExpensesForDen($scope.data.den);
     	console.log($stateParams);
 });
@@ -198,9 +203,19 @@ app.factory('expensesFactory', function($q, $http){
     		};
     	};
 
+        var deleteExpense = function(expenseID){
+            return $http({
+                method: 'DELETE',
+                url: '/api/expenses/' + expenseID
+            }).then(function(res){
+                return res.data;
+            });
+        };
+
     	return {
     		getExpenses: getExpenses,
     		getExpensesForDen: getExpensesForDen,
-    		saveNewExpense: saveNewExpense
+    		saveNewExpense: saveNewExpense,
+            deleteExpense: deleteExpense
     	};
 });

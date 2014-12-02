@@ -17,7 +17,17 @@ router.get('/dens/real', function(req, res){
 			res.send(err);
 		res.json(expenses);
 	});
-})
+});
+
+router.route('/expenses/:expense_id')
+	.delete(function(req, res){
+		Expense.remove({'_id': req.params.expense_id}, function(err, data){
+			if (err)
+				res.send(err);
+			console.log("deleted expense at expenseID " + req.params.expense_id);
+			res.status(200).send("Complete");
+		});
+	});
 
 router.route('/dens/:den')
 	.get(function(req, res){
@@ -73,7 +83,7 @@ router.route('/users/dens/:den')
 			if (!den){
 				res.status(500).end();
 			} else {
-				
+
 				for (var i = 0; i < req.body.users.length; i++){
 					if (den.users.indexOf(req.body.users[i]) === -1){
 						den.users.push(req.body.users[i]);
