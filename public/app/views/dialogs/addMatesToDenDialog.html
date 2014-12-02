@@ -1,0 +1,15 @@
+<md-dialog aria-label="Add Mates to Den">
+  <md-content>
+    <md-subheader class="md-sticky-no-effect">Add Mates to Den</md-subheader>
+    <md-text-float label="Mates to add" ng-model="newDenName"></md-text-float>
+  </md-content>
+  <div class="md-actions" layout="row">
+    <span flex></span>
+    <md-button ng-click="hide()">
+     Cancel
+    </md-button>
+    <md-button ng-click="addMatesToDen(newDenName)" class="md-primary">
+     Add!
+    </md-button>
+  </div>
+</md-dialog>

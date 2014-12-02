@@ -55,6 +55,14 @@ app.controller('foobar', function($scope, $mdDialog, $stateParams, expensesFacto
     		}).then(function(){});
     	};
 
+    	$scope.showAddMatesToDen = function(event){
+    		$mdDialog.show({
+    			controller: DialogController,
+    			templateUrl: "app/views/dialogs/addMatesToDenDialog.html",
+    			targetEvent: event
+    		});
+    	};
+
     	$scope.getExpensesForDen($scope.data.den);
     	console.log($stateParams);
 });

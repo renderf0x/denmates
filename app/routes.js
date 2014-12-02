@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 var Expense = require('./models/expense.js');
 var Den = require('./models/den.js');
+var User = require('./models/user.js');
 
 //for testing only
 
@@ -48,10 +49,19 @@ router.route('/dens/:den')
 
 router.route('/users/:den')
 	.get(function(req, res){
-
+		Den.find({}, function(err, data){
+			if (err)
+				res.send(err);
+			else if (data.length > 0){
+				res.json(data.users);
+			} else {
+				res.json([]);
+			}
+		});
 	})
 	.post(function(req, res){
-
+		console.log(req.body);
+		res.json('POST received: ' + JSON.stringify(req.body));
 	});
 
 router.route('/dens')
@@ -92,6 +102,34 @@ router.route('/mates')
 	})
 	.post(function(req, res){
 
+	});
+
+//testing route to manually add users
+
+router.route('/users')
+	.get(function(req, res){
+		User.find({}, function(err, data){
+			if (err)
+				res.send(err);
+			res.send(data);
+		})
+	})
+	.post(function(req, res){
+		console.log("add user", req.body);
+		var user = new User({
+			name: req.body.name,
+			dens: [],
+			local: {
+					email: req.body.email,
+					password: req.body.password
+				}
+		});
+
+		user.save(function(err){
+			if (err)
+				res.send(err);
+			res.send("created");
+		});
 	});
 
 module.exports = router;

@@ -9,6 +9,7 @@
 		<div class="md-toolbar-tools">
 		<span flex><h3>Current Den: {{data.den}}</h3></span>
 	      <span flex><md-button class="md-raised" ng-click="showCreateDen($event)">Create new den</md-button></span>
+	       <span flex><md-button class="md-raised" ng-click="showAddMatesToDen($event)">Add Mates to den</md-button></span>
 	      <md-button>
 	        Right Bar Button
 	      </md-button>
@@ -27,10 +28,11 @@
 			   <md-text-float label="Tags" ng-model="data.newExpense.tags"></md-text-float>
 			   <md-button class="md-raised" ng-click="saveNewExpense()">Save!</md-button>
 		</md-whiteframe>
-
+		<!-- perhaps one of these here: http://bl.ocks.org/mbostock/3887193 http://bl.ocks.org/kerryrodden/7090426 -->
 		<md-whiteframe class="md-whiteframe-z2">
+			<md-text-float ng-model="search" label="Search here to narrow the field"></md-text-float>
 			<md-list layout="column" flex>
-				<md-item ng-repeat="expense in data.expenses" layout="row">
+				<md-item ng-repeat="expense in data.expenses | filter:search" layout="row">
 					<md-item-content>
 						<div class="md-tile-left">
 							<i class="fa fa-usd"></i>{{expense.amount}}
