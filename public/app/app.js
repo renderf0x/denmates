@@ -59,7 +59,9 @@ app.controller('mainExpensesController', function($scope, $mdDialog, $stateParam
     			controller: DialogController,
     			templateUrl: "app/views/dialogs/createDenDialog.html",
     			targetEvent: event
-    		}).then(function(){});
+    		}).then(function(data){
+                console.log("Got this data: ", data);
+            });
     	};
 
     	$scope.showAddMatesToDen = function(event){
@@ -79,7 +81,7 @@ app.controller('mainExpensesController', function($scope, $mdDialog, $stateParam
     	console.log($stateParams);
 });
 
-function DialogController($scope, $mdDialog, $stateParams, denFactory, userFactory){
+function DialogController($scope, $mdDialog, $stateParams, $state, denFactory, userFactory){
     $scope.data = $scope.data || {};
 
     userFactory.getMates().then(function(data){
@@ -103,8 +105,11 @@ function DialogController($scope, $mdDialog, $stateParams, denFactory, userFacto
 	  };
 	  $scope.createNewDen = function(den) {
 	  	console.log('den is: ' + den);
-	  	denFactory.saveNewDen(den);
+	  	denFactory.saveNewDen(den).then(function(){
+            $state.go('denById', {denId: den});
+        });
 	    $mdDialog.hide();
+        return den;
 	  };
 
       $scope.addMatesToDen = function(){
@@ -114,7 +119,7 @@ function DialogController($scope, $mdDialog, $stateParams, denFactory, userFacto
       };
 };
 
-app.factory('denFactory', function($q, $http){
+app.factory('denFactory', function($q, $http, $location){
 	var saveNewDen = function(den){
 		return $http({
 			method: 'POST',
@@ -220,4 +225,23 @@ app.factory('expensesFactory', function($q, $http){
     		saveNewExpense: saveNewExpense,
             deleteExpense: deleteExpense
     	};
+});
+
+app.filter("customCurrency", function (numberFilter)
+  {
+    function isNumeric(value)
+    {
+      return (!isNaN(parseFloat(value)) && isFinite(value));
+    }
+    return function (inputNumber) {
+        if (isNumeric(inputNumber)){
+
+            var cents = inputNumber.toString().slice(-2);
+            var dollars = inputNumber.toString().slice(0,-2);
+            return dollars + '.' + cents;
+        }
+        else {
+            return inputNumber;
+        }
+    };
 });
