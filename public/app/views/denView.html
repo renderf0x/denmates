@@ -34,7 +34,11 @@
 			   <md-text-float label="Tags" ng-model="data.newExpense.tags"></md-text-float>
 			   <md-button class="md-raised" ng-click="saveNewExpense()">Save!</md-button>
 		</md-whiteframe>
-		<!-- perhaps one of these here: http://bl.ocks.org/mbostock/3887193 http://bl.ocks.org/kerryrodden/7090426 -->
+		
+		<md-whiteframe class="md-whiteframe-z0">
+			<d3-bars data="data.scores" bar-height="20" bar-padding="5"></d3-bars>
+		</md-whiteframe>
+
 	<md-whiteframe class="md-whiteframe-z2">
 		<md-content>
 			<md-text-float ng-model="search" label="Search here to narrow the field"></md-text-float>
@@ -90,12 +94,8 @@
 					</md-item-content>
 				</md-item>
 			</md-list> -->
-			<div layout="column" flex>
-			d3 chart here
-			</div>
 		</md-content>
 	</md-whiteframe>
-	
 	<!-- <pre> Real items: {{data.users | json}}</pre>
 	<pre>{{data.den}}</pre> -->
 </div>

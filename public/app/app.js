@@ -1,4 +1,4 @@
-var app = angular.module( 'denMatesClient', [ 'ngMaterial', 'ngQuickDate', 'ui.router' ] )
+var app = angular.module( 'denMatesClient', [ 'ngMaterial', 'ngQuickDate', 'ui.router', 'd3' ] )
 	.config(function($stateProvider, $urlRouterProvider){
 		$urlRouterProvider.otherwise('/');
 		$stateProvider
@@ -28,7 +28,7 @@ app.config(function(ngQuickDateDefaultsProvider) {
   });
 });
 
-app.controller('mainExpensesController', function($scope, $mdDialog, $stateParams, expensesFactory, denFactory){
+app.controller('mainExpensesController', function($scope, $mdDialog, $stateParams, $window, expensesFactory, denFactory){
 
     	$scope.data = {};
     	$scope.data.newExpense = {};
@@ -39,13 +39,35 @@ app.controller('mainExpensesController', function($scope, $mdDialog, $stateParam
             console.log("got users: ", data)
         });
 
+        $scope.data.scores = [
+              {name: "horo", score: 98},
+              {name: "lawrence", score: 96},
+              {name: 'chloe', score: 75},
+              {name: "test", score: 48},
+              {name: "derek", score: 55}
+            ];
+
         // $scope.data.users = ['Horo', 'Lawrence', 'Chloe']; //for testing
 
     	$scope.getExpensesForDen = function(den){
     		expensesFactory.getExpensesForDen(den).then(function(data){
     			$scope.data.expenses = data
-    			});
+    			}).then(function(){
+                    //$scope.getUserScores();
+                });
     	};
+
+        $scope.getUserScores = function(){
+            var temp = {};
+            // console.dir($scope.data.expenses);
+            for (var i = 0; i < $scope.data.expenses.length; i++){
+                if (!temp.hasOwnProperty($scope.data.expenses[i].user)){
+                    temp[$scope.data.expenses[i].user] = 0;
+                }
+                temp[$scope.data.expenses[i].user] += $scope.data.expenses[i].amount;            }
+            console.log("setting scores to ", temp);
+            $scope.data.scores = temp;
+        }
 
     	$scope.saveNewExpense = function(){
     		console.log($scope.data.newExpense);
@@ -79,6 +101,7 @@ app.controller('mainExpensesController', function($scope, $mdDialog, $stateParam
 
     	$scope.getExpensesForDen($scope.data.den);
     	console.log($stateParams);
+        $window.CreateChart();
 });
 
 function DialogController($scope, $mdDialog, $stateParams, $state, denFactory, userFactory){
@@ -245,3 +268,119 @@ app.filter("customCurrency", function (numberFilter)
         }
     };
 });
+
+angular.module('d3', [])
+  .factory('d3Service', ['$document', '$q', '$rootScope',
+    function($document, $q, $rootScope) {
+      var d = $q.defer();
+      function onScriptLoad() {
+        // Load client in the browser
+        $rootScope.$apply(function() { d.resolve(window.d3); });
+      }
+      // Create a script tag with d3 as the source
+      // and call our onScriptLoad callback when it
+      // has been loaded
+      var scriptTag = $document[0].createElement('script');
+      scriptTag.type = 'text/javascript'; 
+      scriptTag.async = true;
+      scriptTag.src = 'http://d3js.org/d3.v3.min.js';
+      scriptTag.onreadystatechange = function () {
+        if (this.readyState == 'complete') onScriptLoad();
+      }
+      scriptTag.onload = onScriptLoad;
+
+      var s = $document[0].getElementsByTagName('body')[0];
+      s.appendChild(scriptTag);
+
+      return {
+        d3: function() { return d.promise; }
+      };
+}]);
+
+app.directive('barChart', ['d3Service', function(d3Service){
+    return {
+        restrict: 'EA'
+    };
+}])
+    .directive('d3Bars', ['d3Service', function(d3Service, $window, $timeout){
+        return {
+            restrict: 'EA',
+            scope: {
+                data: '='
+            },
+            link: function(scope, element, attrs){
+                d3Service.d3().then(function(d3){
+
+                    var margin = parseInt(attrs.margin) || 20,
+                        barHeight = parseInt(attrs.barHeight) || 20,
+                        barPadding = parseInt(attrs.barPadding) || 5;
+
+                    var svg = d3.select(element[0])
+                        .append("svg")
+                        .style('width', '100%');
+
+                        window.onresize = function(){
+                            scope.$apply();
+                        };
+
+                        // scope.$watch(function(){
+                        //     return angular.element($window)[0].innerWidth;
+                        // }, function(){
+                        //     scope.render(scope.data);
+                        // });
+
+                        scope.$watch('data', function(newVals, oldVals){
+                            return scope.render(newVals);
+                        }, true);
+
+                        scope.render = function(data) {
+                            console.log("scope render run");
+                            svg.selectAll('*').remove();
+                            if (!data) return;
+
+                            var height = scope.data.length * (barHeight + barPadding);
+                            
+                            var width = d3.select(element[0]).node().offsetWidth - margin, color = d3.scale.category20(),
+                                 xScale = d3.scale.linear().domain([0, d3.max(data, function(d){
+                                        return d.score;
+                                 })])
+                                 .range([0, width]);
+                            svg.attr('height', height);
+
+                            svg.selectAll('rect')
+                                .data(data).enter()
+                                .append('rect')
+                                .attr('height', barHeight)
+                                .attr('width', 140)
+                                .attr('x', Math.round(margin/2))
+                                .attr('y', function(d,i) {
+                                  return i * (barHeight + barPadding);
+                                })
+                                .attr('fill', function(d) { return color(d.score); })
+                                .transition()
+                                    .duration(1000)
+                                    .attr('width',function(d){
+                                        return xScale(d.score);
+                                    });
+                            svg.selectAll('text')
+                                  .data(data)
+                                  .enter()
+                                  .append('text')
+                                  .attr('fill', '#fff')
+                                  .attr('y', function(d,i) {
+                                    return i * (barHeight + barPadding) + 15;
+                                  })
+                                  .attr('x', 15)
+                                  .text(function(d) {
+                                    return d.name + " (scored: " + d.score + ")";
+                                  });
+
+                        }
+                        scope.render(scope.data);
+                        setTimeout(function(){
+                            scope.render.bind(this, scope.data);
+                        }, 3000);
+                });
+            }
+        };
+}]);
