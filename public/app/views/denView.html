@@ -1,103 +1,85 @@
 <div ng-controller="mainExpensesController" class="container" layout="column" layout-fill>
-	<md-toolbar>
-		<div class="md-toolbar-tools">
-	      <span><h1>denmates</h1></span>
-	      <span flex></span>
-	      Logged in as:
-	      <md-button>
-	        Derek
-	      </md-button>
-	    </div>
-	</md-toolbar>
-	<md-toolbar>
-		<div class="md-toolbar-tools">
-		<span>Dens</span>
-		<span><md-button class="md-raised md-primary" ng-click="showDenSelector($event)" aria-label="Select Den"><i class="fa fa-paw fa-2x"></i><md-tooltip>Current Den: {{data.den}}</md-tooltip></md-button></span>
-	      <span><md-button class="md-raised md-primary" ng-click="showCreateDen($event)" aria-label="Create Den"><i class="fa fa-plus fa-2x"></i><md-tooltip>Create new den</md-tooltip></md-button></span>
-	      <span flex></span>
-	      <span>Mates</span>
-	      <span><md-button class="md-raised md-primary" ng-click="showAddMatesToDen($event)" aria-label="Add mates to Den"><i class="fa fa-share-alt fa-2x"></i><md-tooltip>Add Mates to den</md-tooltip></md-button></span>
-		  <span>
-		  		<md-button class="" ng-repeat="user in data.users">{{user.name}}</md-button>
-		  </span>
-	    </div>
-	</md-toolbar>
 
-	<md-whiteframe class="md-whiteframe-z1" layout layout="row" layout-align="center center">
-			   <quick-datepicker ng-model='data.newExpense.date' disable-timepicker="true" icon-class='fa fa-calendar'></quick-datepicker>
-			   <md-text-float label="Title" ng-model="data.newExpense.title"></md-text-float>
-			   <md-text-float label="Description" ng-model="data.newExpense.description"></md-text-float>
-			   <md-text-float label="Amount" ng-model="data.newExpense.amount"></md-text-float>
-			   <select class="form-control" label="User" ng-model="data.newExpense.user">
-<!-- 			   	<option value="" disabled selected>Who</option> -->
-			   	<option ng-repeat="user in data.users" value="{{user.name}}" ng-selected="data.users[1]">{{user.name}}</option>
-			   </select>
-			   <md-text-float label="Tags" ng-model="data.newExpense.tags"></md-text-float>
-			   <md-button class="md-raised" ng-click="saveNewExpense()">Save!</md-button>
-		</md-whiteframe>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <span><h1><a ui-sref="landing">denmates</a></h1></span>
+      <span flex></span>
+      Logged in as:
+      <md-button>
+        Derek
+      </md-button>
+    </div>
+  </md-toolbar>
 
-		<md-whiteframe class="md-whiteframe-z0">
-			<div class="nugraph"></div>
-			<d3-bars data="data.scores" bar-height="20" bar-padding="5"></d3-bars>
-		</md-whiteframe>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
 
-	<md-whiteframe class="md-whiteframe-z2">
-		<md-content>
-			<md-text-float ng-model="search" label="Search here to narrow the field"></md-text-float>
-			<table table="table table-hover">
-				<tr ng-repeat="expense in data.expenses | filter:search | orderBy:-expense.date">
-					<td class="item">
-						<h3>{{expense.date | date:'MM/dd/yyyy'}}</h3>
-					</td>
-					<td class="item">
-						<i class="fa fa-usd"></i>{{expense.amount | customCurrency}}
-					</td>
-					<td class="item">
-						<h2>{{expense.title}}</h2>
-					</td>
-					<td class="item">
-						<h4>{{expense.description}}</h4>
-					</td>
-					<td class="item">
-						<h4>{{expense.user}}</h4>
-					</td>
-					<td class="item">
-						<span ng-repeat="tag in expense.tags track by $id(tag)">{{tag}} </span>
-					</td>
-					<td class="item">
-						<i class="fa fa-edit">  </i>
-						<i class="fa fa-times" ng-click="deleteExpense(expense._id)">  </i>
-					</td>
-				</tr>
-			</table>
-			<!-- <md-list flex>
-				<md-item ng-repeat="expense in data.expenses | filter:search" class="row" layout="row" flex="100">
-					<md-item-content>
-						<div class="md-tile-left">
-							<i class="fa fa-usd"></i>{{expense.amount}}
-						</div>
-						<div class="item" layout="column" flex="20">
-							<h3>{{expense.date | date:'MM/dd/yyyy'}}</h3>
-						</div>
-						<div class="item" layout="column" flex="40">
-							<h2>{{expense.title}}</h2>
-						</div>
-							<h4>{{expense.description}}</h4>
-						<div class="item" layout="column" flex="20">
-							<h4>{{expense.user}}</h4>
-						</div>
-						<div class="md-tile-right">
-							<p ng-repeat="tag in expense.tags track by $id(tag)">{{tag}} </p>
-						</div>
-						<div>
-							<i class="fa fa-edit"></i>
-							<i class="fa fa-times"></i>
-						</div>
-					</md-item-content>
-				</md-item>
-			</md-list> -->
-		</md-content>
-	</md-whiteframe>
-	<!-- <pre> Real items: {{data.users | json}}</pre>
-	<pre>{{data.den}}</pre> -->
+      <span>Dens</span>
+      <span>
+        <md-button class="md-raised md-primary" ng-click="showManageDens($event)" aria-label="Select Den"><i class="fa fa-paw fa-2x"></i><md-tooltip>Current Den: {{data.den}}</md-tooltip></md-button>
+      </span>
+        <span>
+          <md-button class="md-raised md-primary" ng-click="showCreateDen($event)" aria-label="Create Den"><i class="fa fa-plus fa-2x"></i><md-tooltip>Create new den</md-tooltip></md-button>
+        </span>
+        <span flex></span>
+
+        <span>Mates</span>
+        <span>
+          <md-button class="md-raised md-primary" ng-click="showAddMatesToDen($event)" aria-label="Add mates to Den"><i class="fa fa-share-alt fa-2x"></i><md-tooltip>Add Mates to den</md-tooltip></md-button>
+        </span>
+      <span>
+          <md-button class="" ng-repeat="user in data.users">{{user.name}}</md-button>
+      </span>
+
+    </div>
+  </md-toolbar>
+
+  <md-whiteframe class="md-whiteframe-z1" layout layout="row" layout-align="center center">
+     <quick-datepicker ng-model='data.newExpense.date' disable-timepicker="true" icon-class='fa fa-calendar'></quick-datepicker>
+     <md-text-float label="Title" ng-model="data.newExpense.title"></md-text-float>
+     <md-text-float label="Description" ng-model="data.newExpense.description"></md-text-float>
+     <md-text-float label="Amount" ng-model="data.newExpense.amount"></md-text-float>
+     <select class="form-control" label="User" ng-model="data.newExpense.user">
+<!--          <option value="" disabled selected>Who</option> -->
+      <option ng-repeat="user in data.users" value="{{user.name}}" ng-selected="data.users[1]">{{user.name}}</option>
+     </select>
+     <md-text-float label="Tags" ng-model="data.newExpense.tags"></md-text-float>
+     <md-button class="md-raised" ng-click="saveNewExpense()">Save!</md-button>
+    </md-whiteframe>
+
+    <md-whiteframe class="md-whiteframe-z0">
+      <d3-bars data="data.scores" bar-height="20" bar-padding="5"></d3-bars>
+    </md-whiteframe>
+
+  <md-whiteframe class="md-whiteframe-z2">
+    <md-content>
+      <md-text-float ng-model="search" label="Search here to narrow the field"></md-text-float>
+      <table table="table table-hover">
+        <tr ng-repeat="expense in data.expenses | filter:search | orderBy:-expense.date">
+          <td class="item">
+            <h3>{{expense.date | date:'MM/dd/yyyy'}}</h3>
+          </td>
+          <td class="item">
+            <i class="fa fa-usd"></i>{{expense.amount | customCurrency}}
+          </td>
+          <td class="item">
+            <h2>{{expense.title}}</h2>
+          </td>
+          <td class="item">
+            <h4>{{expense.description}}</h4>
+          </td>
+          <td class="item">
+            <h4>{{expense.user}}</h4>
+          </td>
+          <td class="item">
+            <span ng-repeat="tag in expense.tags track by $id(tag)">{{tag}} </span>
+          </td>
+          <td class="item">
+            <i class="fa fa-edit">  </i>
+            <i class="fa fa-times" ng-click="deleteExpense(expense._id)">  </i>
+          </td>
+        </tr>
+      </table>
+    </md-content>
+  </md-whiteframe>
 </div>
