@@ -12,11 +12,11 @@
 	<md-toolbar>
 		<div class="md-toolbar-tools">
 		<span>Dens</span>
-		<span><md-button class="md-raised md-primary" ng-click="showDenSelector($event)"><i class="fa fa-paw fa-2x"></i><md-tooltip>Current Den: {{data.den}}</md-tooltip></md-button></span>
-	      <span><md-button class="md-raised md-primary" ng-click="showCreateDen($event)"><i class="fa fa-plus fa-2x"></i><md-tooltip>Create new den</md-tooltip></md-button></span>
+		<span><md-button class="md-raised md-primary" ng-click="showDenSelector($event)" aria-label="Select Den"><i class="fa fa-paw fa-2x"></i><md-tooltip>Current Den: {{data.den}}</md-tooltip></md-button></span>
+	      <span><md-button class="md-raised md-primary" ng-click="showCreateDen($event)" aria-label="Create Den"><i class="fa fa-plus fa-2x"></i><md-tooltip>Create new den</md-tooltip></md-button></span>
 	      <span flex></span>
 	      <span>Mates</span>
-	      <span><md-button class="md-raised md-primary" ng-click="showAddMatesToDen($event)"><i class="fa fa-share-alt fa-2x"></i><md-tooltip>Add Mates to den</md-tooltip></md-button></span>
+	      <span><md-button class="md-raised md-primary" ng-click="showAddMatesToDen($event)" aria-label="Add mates to Den"><i class="fa fa-share-alt fa-2x"></i><md-tooltip>Add Mates to den</md-tooltip></md-button></span>
 		  <span>
 		  		<md-button class="" ng-repeat="user in data.users">{{user.name}}</md-button>
 		  </span>

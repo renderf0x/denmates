@@ -2,10 +2,15 @@ var app = angular.module( 'denMatesClient', [ 'ngMaterial', 'ngQuickDate', 'ui.r
 	.config(function($stateProvider, $urlRouterProvider){
 		$urlRouterProvider.otherwise('/');
 		$stateProvider
+      .state('landing', {
+        url: '/',
+        controller: 'landingController',
+        templateUrl: 'app/views/landing.html'
+      })
 			.state('home', {
-				url: "/",
-				controller: "mainExpensesController",
-				templateUrl: "app/views/denView.html"
+				url: '/home',
+				controller: 'mainExpensesController',
+				templateUrl: 'app/views/denView.html'
 			})
 			.state('denById', {
 				url: '/dens/:denId',
@@ -94,7 +99,7 @@ app.directive('barChart', ['d3Service', function(d3Service){
                         barPadding = parseInt(attrs.barPadding) || 5;
 
                     var svg = d3.select(element[0])
-                        .append("svg")
+                        .append('svg')
                         .style('width', '100%');
 
                         window.onresize = function(){
@@ -150,7 +155,7 @@ app.directive('barChart', ['d3Service', function(d3Service){
                                   })
                                   .attr('x', 15)
                                   .text(function(d) {
-                                    return d.name + " (scored: " + d.score + ")";
+                                    return d.name + ' (total: ' + d.score + ')';
                                   });
 
                         }
@@ -195,7 +200,7 @@ function DialogController($scope, $mdDialog, $stateParams, $state, denFactory, u
       };
 
       $scope.addMatesToDen = function(){
-        console.log("Current Selection: ", $scope.selectedMates);
+        console.log('Current Selection: ', $scope.selectedMates);
         denFactory.addUsersToDen($scope.data.den, $scope.selectedMates);
         $mdDialog.hide();
       };

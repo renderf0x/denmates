@@ -10,6 +10,64 @@ tr:hover {
 	background-color: #EEE;
 }
 
+.landing-splash {
+	height: 500px;
+	background: url('../img/fogfox1920x1200.jpg');
+	-webkit-mask-image: -webkit-linear-gradient(top, rgba(0,0,0,1), rgba(0,0,0,0));
+	background-size: 100%;
+}
+
+.landing-splash h1 {
+	padding-top: 15%;
+	font-size: 4em;
+	font-weight: bold;
+	text-align: center;
+	color: #fff;
+}
+
+.landing-splash h3 {
+	padding-top: 7%;
+	text-align: center;
+	color: #fff;
+	background-size: 100%;
+}
+
+.landing-content {
+	color: gray;
+	text-align: center;
+	/*padding-left: 5%;*/
+}
+
+.landing-content a {
+	color: gray;
+}
+
+.landing-planned {
+	margin-top: 5%;
+}
+
+.landing-planned h4 {
+	text-align: center;
+}
+
+.landing-planned-item div {
+	width: 33%;
+}
+
+.landing-planned-item i {
+	padding-right: 5px;
+}
+
+.landing-planned h1 {
+	-webkit-mask-image: -webkit-linear-gradient(top, rgba(0,0,0,1), rgba(0,0,0,.2));
+}
+
+.splash-img {
+	text-align: center;
+	height: 100%;
+	width: 100%;
+}
+
 .item {
 	margin: 10px;
 }
