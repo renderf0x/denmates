@@ -29,13 +29,15 @@
 			   <md-text-float label="Description" ng-model="data.newExpense.description"></md-text-float>
 			   <md-text-float label="Amount" ng-model="data.newExpense.amount"></md-text-float>
 			   <select class="form-control" label="User" ng-model="data.newExpense.user">
-			   	<option ng-repeat="user in data.users" value="{{user.name}}" ng-selected="data.users[0]">{{user.name}}</option>
+<!-- 			   	<option value="" disabled selected>Who</option> -->
+			   	<option ng-repeat="user in data.users" value="{{user.name}}" ng-selected="data.users[1]">{{user.name}}</option>
 			   </select>
 			   <md-text-float label="Tags" ng-model="data.newExpense.tags"></md-text-float>
 			   <md-button class="md-raised" ng-click="saveNewExpense()">Save!</md-button>
 		</md-whiteframe>
-		
+
 		<md-whiteframe class="md-whiteframe-z0">
+			<div class="nugraph"></div>
 			<d3-bars data="data.scores" bar-height="20" bar-padding="5"></d3-bars>
 		</md-whiteframe>
 
