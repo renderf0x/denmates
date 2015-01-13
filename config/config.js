@@ -1,4 +1,4 @@
 module.exports = {
 	db: 'mongodb://localhost/denmates-test',
-	port: 3000
+	port: process.env.PORT || 3000
 };
